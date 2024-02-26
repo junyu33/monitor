@@ -1,4 +1,6 @@
 .gitignore
+.clangd/
+compile_commands.json
 docs/_build/
 *.o
 *.exe
