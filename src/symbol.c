@@ -217,34 +217,28 @@ int symbol(const uint8_t *addr, char *sym, uint32_t length)
     if(s.lower_address != 0) {
         len = our_snprintf(sym, length, "%s+%p",
             s.lower_funcname, (uintptr_t) addr - s.lower_address);
-        fprintf(fp, "%s+%p", s.lower_funcname, (uintptr_t) addr - s.lower_address);
         sym += len, length -= len;
     }
 
     if(s.higher_address != 0) {
         if(s.lower_address != 0) {
             *sym++ = ' ', length--;
-            fprintf(fp, " ");
         }
         len = our_snprintf(sym, length, "%s-%p",
             s.higher_funcname, s.higher_address - (uintptr_t) addr);
-        fprintf(fp, "%s-%p", s.higher_funcname, s.higher_address - (uintptr_t) addr);
         sym += len, length -= len;
     }
 
     if(module_name != NULL) {
         if(s.lower_address != 0 || s.higher_address != 0) {
             *sym++ = ' ', length--;
-            fprintf(fp, " ");
         }
 
         while (length-- > 20 && *module_name != 0 && *module_name != '.') {
-            fprintf(fp, "%s", tolower(*module_name));
             *sym++ = tolower(*module_name++);
         }
 
         our_snprintf(sym, length, "+%p", addr - mod);
-        fprintf(fp, "+%p", addr - mod);
     }
     return 0;
 }
