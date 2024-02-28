@@ -330,7 +330,8 @@ void log_explain(uint32_t index)
     bson_destroy(&b);
 }
 
-static char TEST_OUTPUT[20] = "C:\\monitor-debug.txt";
+FILE* fp;
+static char TEST_OUTPUT[20] = "C:\\my-debug.txt";
 
 #if DEBUG
 
@@ -348,12 +349,12 @@ static void _log_stacktrace(bson *b)
 
         symbol((const uint8_t *) addrs[idx], sym, sizeof(sym)-32);
         if(sym[0] != 0) {
-            printf("%s @ ", sym);
+            fprintf(fp, "%s @ ", sym);
             our_snprintf(sym + our_strlen(sym),
                 sizeof(sym) - our_strlen(sym), " @ ");
         }
 
-        printf("%p\n", (const uint8_t *) addrs[idx]);
+        fprintf(fp, "%p\n", (const uint8_t *) addrs[idx]);
         our_snprintf(sym + our_strlen(sym), sizeof(sym) - our_strlen(sym),
             "%p", (const uint8_t *) addrs[idx]);
         bson_append_string(b, number, sym);
@@ -862,7 +863,7 @@ void WINAPI log_missing_hook(const char *funcname)
 void log_init(const char *pipe_name, int track)
 {
     InitializeCriticalSection(&g_mutex);
-    freopen(TEST_OUTPUT, "w", stdout);
+    fp = fopen(TEST_OUTPUT, "a");
 
     bson_set_heap_stuff(&_bson_malloc, &_bson_realloc, &_bson_free);
     g_api_init = virtual_alloc_rw(NULL, sig_count() * sizeof(uint8_t));
