@@ -621,6 +621,7 @@ void log_api(uint32_t index, int is_success, uintptr_t return_value,
 
     va_end(args);
 
+    fprintf(fp, "\n");
     bson_append_finish_array(&b);
     bson_finish(&b);
     log_raw(bson_data(&b), bson_size(&b));

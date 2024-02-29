@@ -513,6 +513,16 @@ int main()
     if(argv == NULL) {
         error("Error parsing commandline options!\n");
     }
+    FILE* fp = fopen("C:\\inject-args.log", "w");
+    for (int i = 0; i < argc; ++i) {
+        fprintf(fp, "%S ", argv[i]);
+    }
+    fprintf(fp, "\n");
+    fclose(fp);
+/*
+bin\inject-x86.exe --resume-thread --pid 932 --tid 1724 --apc --dll 
+C:\tmpkw3dsf\bin\monitor-x86.dll --config c:\docume~1\archive\locals~1\temp\tmpoqa6xb
+*/
 
     if(argc < 4) {
         error(
