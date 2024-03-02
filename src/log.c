@@ -48,6 +48,8 @@ static wchar_t g_debug_filepath[MAX_PATH];
 static HANDLE g_debug_handle;
 #endif
 
+FILE* fp;
+
 static void log_raw(const char *buf, size_t length);
 
 static int open_handles()
@@ -330,8 +332,6 @@ void log_explain(uint32_t index)
     bson_destroy(&b);
 }
 
-FILE* fp;
-static char TEST_OUTPUT[20] = "C:\\my-debug.txt";
 
 #if DEBUG
 
@@ -864,7 +864,7 @@ void WINAPI log_missing_hook(const char *funcname)
 void log_init(const char *pipe_name, int track)
 {
     InitializeCriticalSection(&g_mutex);
-    fp = fopen(TEST_OUTPUT, "a");
+    fp = fopen("C:\\stacktrace-debug.txt", "a");
 
     bson_set_heap_stuff(&_bson_malloc, &_bson_realloc, &_bson_free);
     g_api_init = virtual_alloc_rw(NULL, sig_count() * sizeof(uint8_t));
