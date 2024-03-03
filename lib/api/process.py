@@ -387,7 +387,10 @@ class Process(object):
             ]
 
         try:
-            subprocess_checkoutput(argv, env)
+            # enable hardcoded port for remote debugging C code
+            gdbserver_command = ["gdbserver", ":1234"]
+            gdbserver_command.extend(argv)
+            subprocess_checkoutput(gdbserver_command, env)
         except subprocess.CalledProcessError as e:
             log.error(
                 "Failed to execute process from path %r with "
