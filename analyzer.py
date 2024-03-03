@@ -595,7 +595,7 @@ class Analyzer(object):
         # task - one is able to override the starting path of the sample.
         # E.g., for some samples it might be useful to run from %APPDATA%
         # instead of %TEMP%.
-        #if self.config.category == "file":
+        # if self.config.category == "file":
         #    self.target = self.package.move_curdir(self.target)
 
         # Initialize Auxiliary modules

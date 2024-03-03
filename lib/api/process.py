@@ -386,11 +386,20 @@ class Process(object):
                 "--config", self.drop_config(mode=mode, trigger=trigger),
             ]
 
+        # read config analysis.conf
+        import ConfigParser
+        myconfig = ConfigParser.ConfigParser()
+        config_file_path = 'analysis.conf'
+        myconfig.read(config_file_path)
+        isdebug = myconfig.get('analysis', 'debug')
+
         try:
             # enable hardcoded port for remote debugging C code
             gdbserver_command = ["gdbserver", ":1234"]
             gdbserver_command.extend(argv)
-            subprocess_checkoutput(gdbserver_command, env)
+            if isdebug == '1':
+                argv = gdbserver_command
+            subprocess_checkoutput(argv, env)
         except subprocess.CalledProcessError as e:
             log.error(
                 "Failed to execute process from path %r with "
