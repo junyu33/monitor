@@ -12,6 +12,8 @@ scp -i ~/.ssh/id_host ~/.cuckoo/monitor/$(cat ~/.cuckoo/monitor/latest)/* Archiv
 echo "[STEP 5]: delete log files"
 ssh -i ~/.ssh/id_host Archive@192.168.56.3 "cd /cygdrive/c && rm *.txt *.log"
 echo "[STEP 6]: change debug param in conf"
-ssh -i ~/.ssh/id_host Archive@192.168.56.3 "cd /cygdrive/c/tmp3wnweh && ./update-debug.sh 0"
+ssh -i ~/.ssh/id_host Archive@192.168.56.3 "cd /cygdrive/c/tmp3wnweh && ./update-debug.sh 1"
 echo "[STEP 7]: execute analyzer.py"
-ssh -i ~/.ssh/id_host Archive@192.168.56.3 "cd /cygdrive/c/tmp3wnweh && export TEMP=/tmp && cmd /C 'python analyzer.py'"
+ssh -i ~/.ssh/id_host Archive@192.168.56.3 "cd /cygdrive/c/tmp3wnweh && export TEMP=/tmp && cmd /C 'python analyzer.py'" &
+echo "[STEP 8]: wait for 5 sec to let program run to the debugger"
+sleep 5

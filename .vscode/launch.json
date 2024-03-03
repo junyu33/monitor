@@ -14,6 +14,7 @@
             "cwd": "${workspaceFolder}",
             "environment": [],
             "externalConsole": false,
+            "preLaunchTask": "Run Shell Command", // This line runs your shell command before debugging
             "MIMode": "gdb",
             "setupCommands": [
                 {
@@ -23,7 +24,7 @@
                 }
             ],
             "miDebuggerPath": "/usr/bin/gdb",
-            "miDebuggerServerAddress": "192.168.56.3:14399"
+            "miDebuggerServerAddress": "192.168.56.3:1234"
         }
     ]
 }
