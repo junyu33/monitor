@@ -426,20 +426,24 @@ void log_api(uint32_t index, int is_success, uintptr_t return_value,
         if(*fmt == 's') {
             const char *s = va_arg(args, const char *);
             log_string(&b, idx, s, s != NULL ? copy_strlen(s) : 0);
+            fprintf(fp, "%s\n", s);
         }
         else if(*fmt == 'S') {
             int len = va_arg(args, int);
             const char *s = va_arg(args, const char *);
             log_string(&b, idx, s, len);
+            fprintf(fp, "%s\n", s);
         }
         else if(*fmt == 'u') {
             const wchar_t *s = va_arg(args, const wchar_t *);
             log_wstring(&b, idx, s, s != NULL ? copy_strlenW(s) : 0);
+            fprintf(fp, "%S\n", s);
         }
         else if(*fmt == 'U') {
             int len = va_arg(args, int);
             const wchar_t *s = va_arg(args, const wchar_t *);
             log_wstring(&b, idx, s, len);
+            fprintf(fp, "%S\n", s);
         }
         else if(*fmt == 'b') {
             uintptr_t len = va_arg(args, uintptr_t);
@@ -485,9 +489,11 @@ void log_api(uint32_t index, int is_success, uintptr_t return_value,
             if(str != NULL &&
                     copy_bytes(&str_, str, sizeof(ANSI_STRING)) == 0) {
                 log_string(&b, idx, str_.Buffer, str_.Length);
+                fprintf(fp, "%s\n", str_.Buffer);
             }
             else {
                 log_string(&b, idx, "", 0);
+                fprintf(fp, "\n");
             }
         }
         else if(*fmt == 'a') {
@@ -517,6 +523,7 @@ void log_api(uint32_t index, int is_success, uintptr_t return_value,
             switch (copy_uint32(type)) {
             case REG_NONE:
                 log_string(&b, idx, NULL, 0);
+                fprintf(fp, "\n");
                 break;
 
             case REG_DWORD:
@@ -538,6 +545,7 @@ void log_api(uint32_t index, int is_success, uintptr_t return_value,
                         length--;
                     }
                     log_string(&b, idx, (const char *) data, length);
+                    fprintf(fp, "%s\n", (const char *) data);
                 }
                 else {
                     uint32_t length = copy_uint32(size) / sizeof(wchar_t);
@@ -549,6 +557,7 @@ void log_api(uint32_t index, int is_success, uintptr_t return_value,
                         length--;
                     }
                     log_wstring(&b, idx, (const wchar_t *) data, length);
+                    fprintf(fp, "%S\n", (const wchar_t *) data);
                 }
                 break;
 
@@ -587,6 +596,7 @@ void log_api(uint32_t index, int is_success, uintptr_t return_value,
             REFCLSID rclsid = va_arg(args, REFCLSID);
             clsid_to_string(rclsid, buf);
             log_string(&b, idx, buf, strlen(buf));
+            fprintf(fp, "%s\n", buf);
         }
         else if(*fmt == 't') {
             const BSTR bstr = va_arg(args, const BSTR);
@@ -598,6 +608,7 @@ void log_api(uint32_t index, int is_success, uintptr_t return_value,
             }
 
             log_wstring(&b, idx, s, len);
+            fprintf(fp, "%S\n", s);
         }
         else if(*fmt == 'v') {
             const VARIANT *v = va_arg(args, const VARIANT *);
@@ -610,6 +621,7 @@ void log_api(uint32_t index, int is_success, uintptr_t return_value,
             }
 
             log_wstring(&b, idx, s, len);
+            fprintf(fp, "%S\n", s);
         }
         else {
             char buf[2] = {*fmt, 0};
