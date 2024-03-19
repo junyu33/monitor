@@ -375,6 +375,8 @@ void log_api(uint32_t index, int is_success, uintptr_t return_value,
         return;
     }
 
+    fprintf(fp, "----------- log_api start -----------\n");
+
     va_start(args, lasterr);
 
     EnterCriticalSection(&g_mutex);
@@ -638,6 +640,9 @@ void log_api(uint32_t index, int is_success, uintptr_t return_value,
     bson_finish(&b);
     log_raw(bson_data(&b), bson_size(&b));
     bson_destroy(&b);
+
+    fprintf(fp, "----------- log_api ended -----------\n");
+
 }
 
 void log_new_process(int track)
